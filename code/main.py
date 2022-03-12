@@ -1,15 +1,15 @@
 
-from game import Game
+from gameLoop import GameLoop
+from  PyQt5.QtWidgets import *
 
-
+import sys
 
 def main():
+    app = QApplication(sys.argv)
     
-    game = Game()
-
-    game.window.show()
+    GameLoop()
     
-    game.app.exec()
+    app.exec()
 
 if __name__ == "__main__":
     main()
