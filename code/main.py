@@ -6,7 +6,7 @@ import sys
 
 def main():
     app = QApplication(sys.argv)
-    
+     
     GameLoop()
     
     app.exec()

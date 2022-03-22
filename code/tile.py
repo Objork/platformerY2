@@ -12,8 +12,9 @@ class Tile(QGraphicsPixmapItem):
                 self.walkable = True
             else:
                 self.walkable = False
-            self.height = 32
-            self.width = 32
+            self.height = 64
+            self.width = 64
+            self.setScale(2.0)
     
     def is_walkable(self):
         return self.walkable

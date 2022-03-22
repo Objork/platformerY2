@@ -11,6 +11,7 @@ class Player(QGraphicsPixmapItem):
         self.height = 32
         self.width = 32
         self.jump_heigth = 0
+        self.setScale(2.0)
 
     def update(self, keys_pressed):
         dx = 0
@@ -42,3 +43,6 @@ class Player(QGraphicsPixmapItem):
 
     def set_jumping(self):
         self.jumping = True
+
+
+    
