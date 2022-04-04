@@ -27,7 +27,7 @@ class GameLoop(QGraphicsScene):
 
         self.addItem(self.player)
 
-        self.view.centerOn(self.player.scenePos())
+        self.view.centerOn(self.player.scenePos()) 
 
         
 
@@ -63,16 +63,14 @@ class GameLoop(QGraphicsScene):
     def timerEvent(self, event):
         self.game_loop()
         self.update()
+        
 
     def game_loop(self):
         self.player.update(self.keys_pressed)
+
         self.collision()
         self.view.centerOn(self.player.scenePos())
 
-    
-    
-    
-    
     
     def collision(self):
         for i in self.grid:
