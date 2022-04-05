@@ -1,6 +1,7 @@
 import math
 from player import Player
-from tile import Tile
+
+from map.map import Map
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -8,48 +9,29 @@ from PyQt5.QtGui import *
 TILE_WALL = 'y2_2022_05868_platformer\code\content\MapTiles\walltile.png'
 TILE_FLOOR = 'y2_2022_05868_platformer\code\content\MapTiles\platform'
 class GameLoop(QGraphicsScene):
-    def __init__(self, parent = None):
-        QGraphicsScene.__init__(self, parent)
+    def __init__(self, parent=None):
+        QGraphicsScene.__init__(self,parent)
 
         self.keys_pressed = set()
 
         self.timer = QBasicTimer()
-        
-        self.grid = []
+
+        self.map = Map()
+
+        self.setView() 
+
+        self.setMap()
 
         self.timer.start(16, self)
 
         self.player = Player()
 
-        self.setView()
-
-        self.drawGrid()
-
         self.addItem(self.player)
 
-        self.view.centerOn(self.player.scenePos()) 
+        self.view.centerOn(self.player.scenePos())
 
-        
 
-    def setView(self):
-        self.view = QGraphicsView(self)
-        self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.view.show()
-        self.view.setFixedSize(960,540)
-        self.setSceneRect(0,0,960,540)
-
-    def drawGrid(self):
-        for x in range(0, 960, 64):
-            for y in range(0, 600, 64):
-                
-                if y==64*6 or (y==64*16 and (x==64*2 or x==64*3)) :
-                    tile = Tile(x,y, TILE_FLOOR)
-                else:
-                    tile = Tile(x,y, TILE_WALL)
-                self.grid.append(tile)
-                self.addItem(tile) 
-                
+       
 
     def keyPressEvent(self, event):
         self.keys_pressed.add(event.key())
@@ -58,8 +40,6 @@ class GameLoop(QGraphicsScene):
         self.keys_pressed.remove(event.key())
 
    
-    
-    
     def timerEvent(self, event):
         self.game_loop()
         self.update()
@@ -67,13 +47,18 @@ class GameLoop(QGraphicsScene):
 
     def game_loop(self):
         self.player.update(self.keys_pressed)
-
         self.collision()
-        self.view.centerOn(self.player.scenePos())
 
+    def setView(self):
+            self.view = QGraphicsView(self)
+            self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.view.show()
+            self.view.setFixedSize(960,640)
+            self.setSceneRect(0,0,960,640)
     
     def collision(self):
-        for i in self.grid:
+        for i in self.map.grid:
             if i.is_walkable():
                 if self.is_colliding(i):
                     self.player.collided()
@@ -83,3 +68,6 @@ class GameLoop(QGraphicsScene):
         y_collision = (math.fabs(self.player.y() - other.y()) * 1.5) < (self.player.height + other.height)
         return (x_collision and y_collision)
             
+    def setMap(self):
+        for i in self.map.grid:
+            self.addItem(i)

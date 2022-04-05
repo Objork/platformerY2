@@ -7,8 +7,8 @@ class Player(QGraphicsPixmapItem):
         QGraphicsPixmapItem.__init__(self,parent)
         self.setPixmap(QPixmap('y2_2022_05868_platformer\code\content\squidman.png'))
         self.jumping = False
-        self.height = 32
-        self.width = 32
+        self.height = 64
+        self.width = 64
         self.grounded = True
         self.jump_heigth = 0
         self.jumpCooldown = 0
@@ -18,14 +18,13 @@ class Player(QGraphicsPixmapItem):
     def update(self, keys_pressed):
         dx = 0
         dy = 0
-        
+        print(self.scenePos())
         if Qt.Key_A in keys_pressed:
             dx -= 5
         
         if Qt.Key_D in keys_pressed:
             dx += 5 
-        
-        
+            
         if Qt.Key_Space in keys_pressed and self.grounded == True:
             self.set_jumping()
         
