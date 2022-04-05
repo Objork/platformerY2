@@ -18,7 +18,7 @@ class Player(QGraphicsPixmapItem):
     def update(self, keys_pressed):
         dx = 0
         dy = 0
-        print(self.scenePos())
+        
         if Qt.Key_A in keys_pressed:
             dx -= 5
         

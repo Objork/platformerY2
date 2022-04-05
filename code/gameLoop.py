@@ -5,9 +5,6 @@ from map.map import Map
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-
-TILE_WALL = 'y2_2022_05868_platformer\code\content\MapTiles\walltile.png'
-TILE_FLOOR = 'y2_2022_05868_platformer\code\content\MapTiles\platform'
 class GameLoop(QGraphicsScene):
     def __init__(self, parent=None):
         QGraphicsScene.__init__(self,parent)
@@ -30,8 +27,6 @@ class GameLoop(QGraphicsScene):
 
         self.view.centerOn(self.player.scenePos())
 
-
-       
 
     def keyPressEvent(self, event):
         self.keys_pressed.add(event.key())

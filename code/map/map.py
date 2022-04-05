@@ -19,7 +19,6 @@ class Map():
         j = 0
         lines = f.readlines()
         for line in reversed(lines):
-
             try:
                 i -= 64
                 line = line.rstrip().split(",")
@@ -30,7 +29,6 @@ class Map():
                         tile = Tile(j,i, TILE_FLOOR)
                     elif k==0:
                         tile = Tile(j,i, TILE_WALL)
-                    print(j, i)
                     self.grid.append(tile)
                     j+=64
                 j=0
