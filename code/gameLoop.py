@@ -1,6 +1,6 @@
-import math
-from player import Player
 
+from player import Player
+import settings
 from map.map import Map
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -25,7 +25,7 @@ class GameLoop(QGraphicsScene):
 
         self.addItem(self.player)
 
-        self.view.centerOn(self.player.scenePos())
+        self.view.centerOn(settings.WINDOW_WIDTH/2, self.player.y())
 
 
     def keyPressEvent(self, event):
@@ -41,6 +41,7 @@ class GameLoop(QGraphicsScene):
         
 
     def game_loop(self):
+        self.view.centerOn(self.player)
         self.player.update(self.keys_pressed)
         self.collision()
 
@@ -50,18 +51,20 @@ class GameLoop(QGraphicsScene):
             self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
             self.view.show()
             self.view.setFixedSize(960,640)
-            self.setSceneRect(0,0,960,640)
+            
     
     def collision(self):
-        for i in self.map.grid:
-            if i.is_walkable():
-                if self.is_colliding(i):
-                    self.player.collided()
+        tilesInBounds = self.get_tile_on_player(self.player.sceneBoundingRect())
+        for i in tilesInBounds:
+            if (i.is_walkable()):
+                self.player.collided()
 
-    def is_colliding(self, other):
-        x_collision = (math.fabs(self.player.x() - other.x()) * 1.5) < (self.player.width + other.width)
-        y_collision = (math.fabs(self.player.y() - other.y()) * 1.5) < (self.player.height + other.height)
-        return (x_collision and y_collision)
+    def get_tile_on_player(self, playerBoudry):
+        tilesInBounds = []
+        for tile in self.map.grid:
+            if tile.sceneBoundingRect().intersects(playerBoudry):
+                tilesInBounds.append(tile)
+        return tilesInBounds
             
     def setMap(self):
         for i in self.map.grid:
