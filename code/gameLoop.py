@@ -12,9 +12,11 @@ class GameLoop(QGraphicsScene):
         self.keys_pressed = set()
 
         self.timer = QBasicTimer()
+        
+        self.paused = False
 
         self.map = Map()
-
+        
         self.setView() 
 
         self.setMap()
@@ -26,10 +28,19 @@ class GameLoop(QGraphicsScene):
         self.addItem(self.player)
 
         self.view.centerOn(settings.WINDOW_WIDTH/2, self.player.y())
+        
+        self.pauseMenu = QToolBar()
 
+        self.createPauseMenu()
+        
+        self.addWidget(self.pauseMenu)
+
+        self.pauseMenu.move(self.view.x()/2, self.view.y()/2)
 
     def keyPressEvent(self, event):
         self.keys_pressed.add(event.key())
+        if Qt.Key_Escape in self.keys_pressed:
+            self.paused = not self.paused
 
     def keyReleaseEvent(self, event):
         self.keys_pressed.remove(event.key())
@@ -39,11 +50,18 @@ class GameLoop(QGraphicsScene):
         self.game_loop()
         self.update()
         
+        
 
     def game_loop(self):
-        self.view.centerOn(self.player)
-        self.player.update(self.keys_pressed)
-        self.collision()
+        if not self.paused:
+            self.pauseMenu.setVisible(False)
+            self.view.centerOn(self.player)
+            self.player.update(self.keys_pressed)
+            self.collision()
+        
+        else:
+            self.pauseMenu.move(self.player.x(), self.player.y()-settings.TEXTURE_SIZE)
+            self.pauseMenu.setVisible(True)
 
     def setView(self):
             self.view = QGraphicsView(self)
@@ -59,13 +77,28 @@ class GameLoop(QGraphicsScene):
             if (i.is_walkable()):
                 self.player.collided()
 
-    def get_tile_on_player(self, playerBoudry):
+    def get_tile_on_player(self, playerBoundry):
         tilesInBounds = []
         for tile in self.map.grid:
-            if tile.sceneBoundingRect().intersects(playerBoudry):
+            if tile.sceneBoundingRect().intersects(playerBoundry):
                 tilesInBounds.append(tile)
         return tilesInBounds
             
     def setMap(self):
         for i in self.map.grid:
             self.addItem(i)
+
+
+    def createPauseMenu(self):
+        toolButton = QToolButton()
+        toolButton.setText("Scoreboard")
+        toolButton.setCheckable(True)
+        toolButton.setAutoExclusive(True)
+        self.pauseMenu.addWidget(toolButton)
+        toolButton = QToolButton()
+        toolButton.setText("Exit Game")
+        toolButton.setCheckable(True)
+        toolButton.setAutoExclusive(True)
+        self.pauseMenu.addWidget(toolButton)
+        self.pauseMenu.setMovable(False)
+        self.pauseMenu.setVisible(False)

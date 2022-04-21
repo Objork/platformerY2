@@ -8,11 +8,11 @@ import settings
 class Map(): 
     def __init__(self):  
         self.grid = []
-        self.readMap()
+        self.readMap(settings.MAP_FILE)
 
-    def readMap(self):
+    def readMap(self, map):
 
-        f = open("y2_2022_05868_platformer\code\map\mapSetting.txt", "r")
+        f = open(map, "r")
         i = 640
         j = 0
         lines = f.readlines()
@@ -27,6 +27,8 @@ class Map():
                         tile = Tile(j,i, settings.TILE_FLOOR)
                     elif k==0:
                         tile = Tile(j,i, settings.TILE_WALL)
+                    elif k==2:
+                        tile = Tile(j,i, settings.SPIKE_TRAP)
                     self.grid.append(tile)
                     j+=settings.TEXTURE_SIZE
                 j=0

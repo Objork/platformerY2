@@ -12,6 +12,7 @@ class Player(QGraphicsPixmapItem):
         self.jump_heigth = 0
         self.oldPos = 0
         self.setScale(1.2)
+        self.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
         
 
     def update(self, keys_pressed):
