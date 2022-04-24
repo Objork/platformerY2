@@ -28,3 +28,31 @@ No changes to the project plan, I am almost on schedule, I just need to get the 
 
  I have had a bit of a hard time figuring PyQt5 to do the things I want. I think reading PyQt5 documentation has taken the most time so far in this project. 
  One thing I have added to my plan is to add some sort of spike traps or something to balance the game. I have plans to make it a platformer where you climb out of a tower/dungeon so you can't really fall down pitfalls only to the ground level. Traps should balance this out so there is a risk of dying when climbing. 
+
+# Checkpoint 2
+
+## Current properties
+
+What properties have you already implemented into your project? What can be done with the program at this point?
+
+There is a somewhat working game currently with player character, basic death, I added pause menu but the buttons don't do anything yet, you can climb on the platform and die from spikes
+## Instructions
+
+ - Is it possible to run the program already? (yes/no)
+ - How is the program executed?
+Yes the program can be run through basic python compiling.
+
+## Schedule
+
+ - How much time have you spent making the project this far?
+ - Have you made changes to the schedule of your project plan?
+
+ I have put maybe 30 hours on the project, I have some problems with getting collision working correctly. I have downscaled a project a lot from the original plan, I will get to normal requirments working and some hard ones like score system but other than that just a basic game. I last few weeks I have been really sick so I am behind schedule but I will have to work hard this coming week to catch up. I dropped enemies last checkpoint but I will work on adding some obstacles that move for more dynamic gameplay. 
+
+## Other
+
+ - Have you faced any specific problems?
+ - Have you had to make changes to your plan?
+
+ As I said earlier I have had to downscale the project a lot because of health issues, but I am good now and will work hard to get a finished project out in time. I have had problems with the collision detection and writing test cases so they are a bit lacking this checkpoint but for the finished version I will try to have more of them.
+ 

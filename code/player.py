@@ -53,7 +53,6 @@ class Player(QGraphicsPixmapItem):
             self.grounded = True
         
     
-    
     def death(self):
         self.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
 

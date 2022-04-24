@@ -19,7 +19,6 @@ class Test(unittest.TestCase):
         self.assertEqual(walkable, tile.is_walkable())
 
 
-
     def map_file_load(self):
         
         try:
