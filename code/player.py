@@ -52,11 +52,14 @@ class Player(QGraphicsPixmapItem):
         if not (self.jumping):
             self.grounded = True
         
+    
+    
+    def death(self):
+        self.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
 
     def set_jumping(self):
         self.jumping = True
         self.grounded = False
         
-
 
     

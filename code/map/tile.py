@@ -21,3 +21,6 @@ class Tile(QGraphicsPixmapItem):
     
     def is_walkable(self):
         return self.walkable
+
+    def is_death(self):
+        return self.death

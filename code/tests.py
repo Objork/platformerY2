@@ -6,6 +6,7 @@ from map.map import Map
 
 from map.tile import Tile
 
+import settings
 class CreationError(Exception):
     def __init__(self, message):
         super(CreationError, self).__init__(message)
@@ -13,7 +14,11 @@ class CreationError(Exception):
 class Test(unittest.TestCase):
 
     def correct_tile(self):
-        pass
+        tile = Tile(0,640, settings.TILE_FLOOR)
+        walkable = True
+        self.assertEqual(walkable, tile.is_walkable())
+
+
 
     def map_file_load(self):
         

@@ -1,4 +1,5 @@
 
+from turtle import width
 from player import Player
 import settings
 from map.map import Map
@@ -72,18 +73,33 @@ class GameLoop(QGraphicsScene):
             
     
     def collision(self):
+        
+
         tilesInBounds = self.get_tile_on_player(self.player.sceneBoundingRect())
         for i in tilesInBounds:
+            
             if (i.is_walkable()):
                 self.player.collided()
+            if (i.is_death()):
+                self.player.death()
 
     def get_tile_on_player(self, playerBoundry):
         tilesInBounds = []
         for tile in self.map.grid:
             if tile.sceneBoundingRect().intersects(playerBoundry):
+                left, right, bottom, top = self.collidingWhere(tile)
+                print (left, right, bottom, top)
                 tilesInBounds.append(tile)
         return tilesInBounds
-            
+
+    def collidingWhere(self, tile):
+        left = self.player.x() < tile.x() + settings.TEXTURE_SIZE 
+        right = self.player.x() + self.player.sceneBoundingRect().width() > tile.x() 
+        bottom = self.player.y() < tile.y() + settings.TEXTURE_SIZE 
+        top = self.player.y() + self.player.sceneBoundingRect().height() > tile.y()
+        return left, right, bottom, top
+
+
     def setMap(self):
         for i in self.map.grid:
             self.addItem(i)
