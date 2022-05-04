@@ -5,7 +5,7 @@ from  PyQt5.QtWidgets import *
 import sys
 
 def main(): 
-
+ 
     app = QApplication(sys.argv) 
     
     GameLoop()    
@@ -13,4 +13,4 @@ def main():
     app.exec()
  
 if __name__ == "__main__":
-    main()
+    main() 

@@ -11,9 +11,10 @@ class Player(QGraphicsPixmapItem):
         self.grounded = False
         self.jump_heigth = 0
         self.oldPos = 0
-        self.boolCheckForGravity = False
+        
         self.setScale(1.2)
         self.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
+
         
 
     def update(self, keys_pressed):
@@ -41,30 +42,45 @@ class Player(QGraphicsPixmapItem):
                 self.jumping = False
                 self.jump_heigth = 0
         
-        if dy != 10:
-            self.boolCheckForGravity = True
-        else:
-            self.boolCheckForGravity = False
-
+        if dy or dx != 0:
+            self.walking = True
+        
         self.setPos(self.x()+dx, self.y()+dy) 
         
     
     
-    def collided(self, left, right, top, bottom, tile):
-        print(left, right, bottom, top)
-        print(self.scenePos().x(), self.scenePos().y())
+    def collided(self, tile):
+   
+        #print(self.grounded)
+
+        #print(tile.x(), tile.y())
+       
         
-        self.grounded = bottom
-        
+        left = self.sceneBoundingRect().bottomLeft().x() < tile.sceneBoundingRect().bottomRight().x()
+       
+        right = self.sceneBoundingRect().bottomRight().x() > tile.sceneBoundingRect().bottomLeft().x()
+  
+        top = self.sceneBoundingRect().top() < tile.sceneBoundingRect().bottom()
+    
+        bottom =  self.sceneBoundingRect().bottom() >  tile.sceneBoundingRect().top()
+      
+        topbottom = tile.sceneBoundingRect().top() < self.sceneBoundingRect().top()
         if (bottom):
-            self.setPos(self.x(), self.oldPos.y())
-        if (top):
-            self.setPos(self.x(), self.oldPos.y())
-        if (left):
-            self.setPos(self.oldPos.x(), self.y())
-        if (right):
-            self.setPos(self.oldPos.x(), self.y())
+            
+            print("Player BOTTOM: ", self.sceneBoundingRect().bottom())
+            print("TOP: ", tile.sceneBoundingRect().top())
+            print("BOTTOM: ", tile.sceneBoundingRect().bottom())
+            print("PLAYER TOP: ", self.sceneBoundingRect().top())
+            print()
+
+            self.grounded = True
+            
         
+        
+                 
+        
+        
+     
     def death(self):
         self.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
 
@@ -72,8 +88,9 @@ class Player(QGraphicsPixmapItem):
         self.jumping = True
 
     def gravityTrue(self):
-        if self.boolCheckForGravity:
-            self.grounded = False
+
+        self.grounded = False
+        #print("GRAVITY ON")
 
         
         

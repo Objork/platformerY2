@@ -56,6 +56,7 @@ class GameLoop(QGraphicsScene):
         self.game_loop()
         self.update()
            
+    
     def game_loop(self):
         self.scoreBoard.timerCounter()
         if not self.paused:
@@ -93,14 +94,11 @@ class GameLoop(QGraphicsScene):
         c= 0
         if len(tilesInBounds) == 0:
             self.player.gravityTrue()
-        
+
         else:
             for i in tilesInBounds:
                 c += 1
-                print("THE TILE:", c , i.scenePos().x(), i.scenePos().y())
-                left, right, bottom, top = self.collidingWhere(i)
-                self.player.collided(left, right, top, bottom, i)
-                
+                self.player.collided(i)
                 if (i.is_death()):
                     self.player.death()
                     self.spawnCoins()                
@@ -115,16 +113,6 @@ class GameLoop(QGraphicsScene):
                     tilesInBounds.append(tile)           
         return tilesInBounds
 
-    def collidingWhere(self, tile):
-        left = self.player.scenePos().x() < tile.x() + settings.TEXTURE_SIZE
-     
-        right = self.player.scenePos().x()  + self.player.sceneBoundingRect().width() > tile.x() 
-        
-        top = self.player.scenePos().y() < tile.y() + settings.TEXTURE_SIZE 
-       
-        bottom = self.player.scenePos().y() + self.player.sceneBoundingRect().height() > tile.y()
-        
-        return left, right, top, bottom
 
     def setMap(self):
         for i in self.map.grid:
