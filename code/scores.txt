@@ -1,12 +1,3 @@
 1sir: 0
-2wzy: 0
-3bts: 0
-4idp: 122.939712
-5qwz: 51.944064
-6xee: 0
-7jjy: 0
-8yry: 0
-9nqq: 0
-10noa: 0
-11stq: None
-12ddl: 39400
+
+3tpb: 1398.5

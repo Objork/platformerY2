@@ -1,6 +1,7 @@
 from player import Player
 from scoreSystem import ScoreSystem
 from pauseMenu import pauseMenu
+from map.coin import Coin
 import settings
 
 from map.map import Map
@@ -61,7 +62,7 @@ class Game(QGraphicsScene):
             self.pauseMenu.setVisible(False)
             self.view.centerOn(self.player)
             self.player.update(self.keys_pressed)
-            print(self.scoreBoard.getScore())
+            print(self.scoreBoard.coins)
             for i in self.maps[self.currentMap].spikeballs:
                 i.update()
             self.collision()
@@ -82,11 +83,13 @@ class Game(QGraphicsScene):
         for  j in self.maps[self.currentMap].spikeballs:
             if j.sceneBoundingRect().intersects(self.player.sceneBoundingRect()):
                 self.player.death()
+                self.scoreBoard.playerDeath()
                 self.spawnCoins()
         for k in self.maps[self.currentMap].coins:
             if k.sceneBoundingRect().intersects(self.player.sceneBoundingRect()):
-                self.removeItem(k)
-                self.scoreBoard.coinCollected()
+                if isinstance(self.itemAt(k.scenePos().x(), k.scenePos().y(), QTransform()), Coin):
+                    self.removeItem(k)
+                    self.scoreBoard.coinCollected()
         c= 0
         if len(tilesInBounds) == 0:
             self.player.gravityTrue()
@@ -96,6 +99,7 @@ class Game(QGraphicsScene):
                 self.player.collided(i)
                 if (i.is_death()):
                     self.player.death()
+                    self.scoreBoard.playerDeath()
                     self.spawnCoins()                
                 if (i.is_map_exit()):
                     self.player.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
@@ -133,6 +137,7 @@ class Game(QGraphicsScene):
 
     def exitMap(self):
         self.scoreBoard.saveCoins()
+        self.scoreBoard.coins = 0
         if self.mapSet == False:
             self.paused = True
             self.currentMap += 1
