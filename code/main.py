@@ -1,5 +1,5 @@
+from game import Game                 
 
-from gameLoop import GameLoop                 
 from  PyQt5.QtWidgets import *
  
 import sys
@@ -8,7 +8,7 @@ def main():
  
     app = QApplication(sys.argv) 
     
-    GameLoop()    
+    Game()    
     
     app.exec()
  

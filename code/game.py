@@ -8,17 +8,18 @@ from map.map import Map
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-class GameLoop(QGraphicsScene):
+class Game(QGraphicsScene):
     def __init__(self, parent=None):
         QGraphicsScene.__init__(self,parent)
-
         self.keys_pressed = set()
-        
         self.timer = QBasicTimer()
-        
         self.paused = False
-
-        self.map = Map()
+        self.mapSet = True
+        self.maps = []
+        self.currentMap = 0
+        for i in settings.MAP_FILES:
+            map = Map(i)
+            self.maps.append(map)
         
         self.setView() 
 
@@ -28,13 +29,11 @@ class GameLoop(QGraphicsScene):
 
         self.timer.start(16, self)
 
-        self.player = Player()
-
-        self.addItem(self.player)
-
         self.view.centerOn(settings.WINDOW_WIDTH/2, self.player.y())
         
         self.pauseMenu = pauseMenu()
+
+        self.pauseMenu.addScore(self.scoreBoard)
  
         self.addWidget(self.pauseMenu)
         
@@ -53,25 +52,22 @@ class GameLoop(QGraphicsScene):
         self.keys_pressed.remove(event.key())
 
     def timerEvent(self, event):
-        self.game_loop()
+        self.gameLoop()
         self.update()
            
-    
-    def game_loop(self):
+    def gameLoop(self):
         self.scoreBoard.timerCounter()
         if not self.paused:
             self.pauseMenu.setVisible(False)
             self.view.centerOn(self.player)
             self.player.update(self.keys_pressed)
-            for i in self.map.spikeballs:
+            print(self.scoreBoard.getScore())
+            for i in self.maps[self.currentMap].spikeballs:
                 i.update()
             self.collision()
-        
         else:
             self.pauseMenu.move(self.player.x(), self.player.y()-settings.TEXTURE_SIZE)
             self.pauseMenu.setVisible(True)
-        score = self.scoreBoard.getScore()
-        #print(score)
 
     def setView(self):
             self.view = QGraphicsView(self)
@@ -83,18 +79,17 @@ class GameLoop(QGraphicsScene):
     
     def collision(self):
         tilesInBounds = self.get_tile_on_player(self.player.sceneBoundingRect())
-        for  j in self.map.spikeballs:
+        for  j in self.maps[self.currentMap].spikeballs:
             if j.sceneBoundingRect().intersects(self.player.sceneBoundingRect()):
                 self.player.death()
                 self.spawnCoins()
-        for  k in self.map.coins:
+        for k in self.maps[self.currentMap].coins:
             if k.sceneBoundingRect().intersects(self.player.sceneBoundingRect()):
-                self.scoreBoard.coinCollected()
                 self.removeItem(k)
+                self.scoreBoard.coinCollected()
         c= 0
         if len(tilesInBounds) == 0:
             self.player.gravityTrue()
-
         else:
             for i in tilesInBounds:
                 c += 1
@@ -102,12 +97,16 @@ class GameLoop(QGraphicsScene):
                 if (i.is_death()):
                     self.player.death()
                     self.spawnCoins()                
+                if (i.is_map_exit()):
+                    self.player.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
+                    self.exitMap()
                 if (i.is_exit()):
                     self.gameEnded()
+                
 
     def get_tile_on_player(self, playerBoundry):
         tilesInBounds = []
-        for tile in self.map.grid:
+        for tile in self.maps[self.currentMap].grid:
             if tile.is_walkable():
                 if tile.sceneBoundingRect().intersects(playerBoundry):
                     tilesInBounds.append(tile)           
@@ -115,21 +114,36 @@ class GameLoop(QGraphicsScene):
 
 
     def setMap(self):
-        for i in self.map.grid:
+        for i in self.maps[self.currentMap].grid:
             self.addItem(i)
         self.spawnSpikeBalls()
         self.spawnCoins()
+        self.player = Player()
+        self.addItem(self.player)
+        self.player.setPos(settings.STARTING_POS_X, settings.STARTING_POS_Y)
+        self.paused = False
 
     def spawnCoins(self):
-        for k in self.map.coins:
+        for k in self.maps[self.currentMap].coins:
             self.addItem(k)
 
     def spawnSpikeBalls(self):
-        for j in self.map.spikeballs:
+        for j in self.maps[self.currentMap].spikeballs:
             self.addItem(j)
 
-
+    def exitMap(self):
+        self.scoreBoard.saveCoins()
+        if self.mapSet == False:
+            self.paused = True
+            self.currentMap += 1
+            self.setMap()
+        else:
+            self.mapSet = False
+    
     def gameEnded(self):
-        self.paused = True
+        w, h = self.endingScreen.size().width(), self.endingScreen.size().height()
         self.addPixmap(self.endingScreen)
+        self.view.fitInView(QRectF(0,0, w,h), Qt.KeepAspectRatioByExpanding)
+        self.update()
+        self.paused = True
         self.scoreBoard.writeScores()

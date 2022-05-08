@@ -12,6 +12,7 @@ class Tile(QGraphicsPixmapItem):
             self.walkable = False    
             self.death = False
             self.exit = False
+            self.exitMap = False
             if tileText == settings.TILE_FLOOR:
                 self.walkable = True
             
@@ -22,6 +23,10 @@ class Tile(QGraphicsPixmapItem):
             elif tileText == settings.TILE_DOOR:
                 self.exit = True
                 self.walkable = True
+
+            elif tileText == settings.MAP_EXIT:
+                self.exitMap = True
+                self.walkable = True
     
     def is_walkable(self):
         return self.walkable
@@ -31,3 +36,6 @@ class Tile(QGraphicsPixmapItem):
 
     def is_exit(self):
         return self.exit
+
+    def is_map_exit(self):
+        return self.exitMap

@@ -1,4 +1,5 @@
 
+
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -10,11 +11,11 @@ from map.coin import Coin
 import settings
 
 class Map(): 
-    def __init__(self):  
+    def __init__(self, i):  
         self.grid = []
         self.spikeballs = []
         self.coins = []
-        self.readMap(settings.MAP_FILE)
+        self.readMap(i)
 
     def readMap(self, map):
         f = open(map, "r")
@@ -44,10 +45,12 @@ class Map():
                         self.coins.append(coin)
                     elif k==5:
                         tile = Tile(j,i, settings.TILE_DOOR)
+                    elif k==6:
+                        tile = Tile(j,i, settings.MAP_EXIT)
                     self.grid.append(tile)
                     j+=settings.TEXTURE_SIZE
                 j=0
-            except:
-                raise ValueError()
+            except ValueError as e:
+                print("Creation of map gone wrong")
         f.close()
                 

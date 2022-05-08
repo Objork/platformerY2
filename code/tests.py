@@ -1,32 +1,32 @@
+
 import unittest
 
-from player import Player
-
-from map.map import Map
+from main import *
 
 from map.tile import Tile
 
+from map.map import Map
+
 import settings
+
+app = QApplication(sys.argv)
 class CreationError(Exception):
     def __init__(self, message):
         super(CreationError, self).__init__(message)
 
 class Test(unittest.TestCase):
 
-    def correct_tile(self):
+    def test_correct_tile(self):
         tile = Tile(0,640, settings.TILE_FLOOR)
-        walkable = True
-        self.assertEqual(walkable, tile.is_walkable())
+        self.assertTrue(tile.is_walkable())
 
 
-    def map_file_load(self):
+    def test_map_file_load(self):
+       
+        self.assertIsInstance(Map(settings.MAP_FILES[0]), Map)
         
-        try:
-           Map.readMap('y2_2022_05868_platformer\code\map\mapSetting.txt')
-        except CreationError:
-            self.fail("Unable to load map")
-
-
-    def player_created(self):
-        pass
+        self.assertRaises(Exception, Map('y2_2022_05868_platformer\code\scores.txt'))
     
+
+if __name__ == '__main__':
+    unittest.main()

@@ -2,14 +2,16 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-import settings
-
 class pauseMenu(QToolBar):
     def __init__(self, parent=None):
         QToolBar.__init__(self,parent)
         
         self.createPauseMenu()
-    
+        self.scoreBoard = object()
+        self.popWindow = QMessageBox()
+        
+        self.popWindow.setWindowTitle("SCORES")
+
     def createPauseMenu(self):
         toolButton1 = QAction("Scoreboard", self)
         toolButton1.triggered.connect(self.onButton1Click)
@@ -27,7 +29,12 @@ class pauseMenu(QToolBar):
         self.setVisible(False)
 
     def onButton1Click(self):
-        print("click")
+        self.popWindow.show()
+        self.popWindow.setText(self.scoreBoard.messageBoxLine)
+       
 
     def onButton2Click(self):
-        print("click2")
+        print("DOESN'T WORK YOU GOT TO EXIT FROM THE WINDOW")
+
+    def addScore(self, scoreBoard):
+        self.scoreBoard = scoreBoard
