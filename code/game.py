@@ -62,7 +62,6 @@ class Game(QGraphicsScene):
             self.pauseMenu.setVisible(False)
             self.view.centerOn(self.player)
             self.player.update(self.keys_pressed)
-            print(self.scoreBoard.coins)
             for i in self.maps[self.currentMap].spikeballs:
                 i.update()
             self.collision()
