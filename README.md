@@ -1,4 +1,38 @@
 # Y2_2022_05868_Platformer
+## Introduction
+
+This is the project for the course programming course Y2 CS-A1121 
+Basic platforming game where you have to avoid traps and collect coins as fast as possible
+## File and directory structure
+
+  There are to directiories for code and for project documents.
+  Code directory has a folder for content which are the images used for graphics in the game
+  and a folder for called map that has the classes that construct the levels. 
+
+## Installation instructions
+
+  If you have PYQT5 there shouldn't be any problems running the program
+
+## User instructions
+
+  Executed through normal python compling
+  A to move character left, D to move right, SPACE to jump, ESC to access pausemenu. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Checkpoint1
 
 ## Current properties
@@ -55,4 +89,6 @@ Yes the program can be run through basic python compiling.
  - Have you had to make changes to your plan?
 
  As I said earlier I have had to downscale the project a lot because of health issues, but I am good now and will work hard to get a finished project out in time. I have had problems with the collision detection and writing test cases so they are a bit lacking this checkpoint but for the finished version I will try to have more of them.
+ 
+
  
