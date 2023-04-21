@@ -38,7 +38,7 @@ class Game(QGraphicsScene):
  
         self.addWidget(self.pauseMenu)
         
-        self.pauseMenu.move(self.view.x()/2, self.view.y()/2)
+        self.pauseMenu.move(int(self.view.x()/2), int(self.view.y()/2))
 
         self.endingScreen = QPixmap(settings.ENDING_SCREEN)
 
